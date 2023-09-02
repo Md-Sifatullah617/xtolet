@@ -60,10 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Positioned(
                 left: Get.width * 0.05,
                 right: Get.width * 0.05,
-                top: Get.height * 0.1,
+                top: Get.height * 0.15,
                 child: Container(
-                  height: Get.height * 0.425,
-                  width: Get.width * 0.9,
                   decoration: BoxDecoration(
                       color: AppColor.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -123,6 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         CustomButton(
                           title: "Search",
+                          borderRad: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
                           btnFunction: () {},
                         ),
                       ],
@@ -202,16 +203,18 @@ class _MyHomePageState extends State<MyHomePage> {
 class CustomText extends StatelessWidget {
   final String text;
   final TextStyle? txtStyle;
+  final TextAlign? textAlign;
   const CustomText({
     super.key,
     required this.text,
     this.txtStyle,
+    this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      textAlign: TextAlign.center,
+      textAlign: textAlign ?? TextAlign.center,
       text,
       style: txtStyle ?? customTextStyle,
     );
@@ -224,26 +227,32 @@ class CustomTextformField extends StatelessWidget {
   final String? hintText;
   final TextEditingController? txtController;
   final BorderRadius? borderRad;
+  final double? width;
   const CustomTextformField({
     super.key,
     this.hintText,
     this.txtController,
     this.borderRad,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: AppColor.blackColor,
-      style: const TextStyle(
-          decoration: TextDecoration.none, decorationThickness: 0),
-      decoration: InputDecoration(
-          hintText: hintText,
-          border: OutlineInputBorder(
-              borderRadius: borderRad ?? BorderRadius.zero,
-              borderSide: BorderSide.none),
-          fillColor: AppColor.lightBlue,
-          filled: true),
+    return SizedBox(
+      width: width,
+      child: TextFormField(
+        cursorColor: AppColor.blackColor,
+        style: const TextStyle(
+            decoration: TextDecoration.none, decorationThickness: 0),
+        decoration: InputDecoration(
+            isDense: true,
+            hintText: hintText,
+            border: OutlineInputBorder(
+                borderRadius: borderRad ?? BorderRadius.zero,
+                borderSide: BorderSide.none),
+            fillColor: AppColor.lightBlue,
+            filled: true),
+      ),
     );
   }
 }

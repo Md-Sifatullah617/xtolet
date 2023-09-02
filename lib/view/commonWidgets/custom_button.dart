@@ -4,21 +4,32 @@ import 'package:xtolet/constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
+  final BorderRadius? borderRad;
   final Function()? btnFunction;
-  const CustomButton({super.key, required this.title, this.btnFunction});
+  final double? buttonWidth;
+  final double? buttonHeight;
+  final Widget? icon;
+  const CustomButton(
+      {super.key,
+      required this.title,
+      this.btnFunction,
+      this.borderRad,
+      this.icon,
+      this.buttonWidth,
+      this.buttonHeight});
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: btnFunction,
-      child: Text(title),
+      label: Text(title),
+      icon: icon ?? Container(),
       style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.blackColor,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10))),
-          minimumSize: Size(Get.width * 0.85, Get.height * 0.07)),
+              borderRadius: borderRad ?? BorderRadius.zero),
+          minimumSize: Size(buttonWidth ?? Get.width * 0.85,
+              buttonHeight ?? Get.height * 0.06)),
     );
   }
 }
