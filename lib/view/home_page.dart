@@ -10,9 +10,16 @@ import 'package:xtolet/controller/pic_zoom_controller.dart';
 import 'package:xtolet/view/commonWidgets/custom_button.dart';
 import 'package:xtolet/view/login_screen.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final picCtrl = Get.put(PictureController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +123,8 @@ class MyHomePage extends StatelessWidget {
                         ),
                         CustomButton(
                           title: "Search",
-                        )
+                          btnFunction: () {},
+                        ),
                       ],
                     ),
                   ),
@@ -149,23 +157,21 @@ class MyHomePage extends StatelessWidget {
                   childAspectRatio: 0.9),
               itemCount: apartmentlist.length,
               itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    picCtrl.zoompic.value = true;
-                    Future.delayed(const Duration(seconds: 1),
-                        () => picCtrl.zoompic.value = false);
-                  },
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: Get.width * 0.4,
-                        width: Get.width * 0.4,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              100,
-                            ),
-                            child: Obx(() {
-                              return picCtrl.zoompic.value
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        picCtrl.zoomedIndex.value =
+                            picCtrl.isZoomed(index).value ? -1 : index;
+                      },
+                      child: Obx(() => SizedBox(
+                          height: Get.width * 0.4,
+                          width: Get.width * 0.4,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                100,
+                              ),
+                              child: picCtrl.isZoomed(index).value
                                   ? ZoomIn(
                                       child: SvgPicture.asset(
                                         apartmentlist[index]["picture"],
@@ -175,18 +181,16 @@ class MyHomePage extends StatelessWidget {
                                   : SvgPicture.asset(
                                       apartmentlist[index]["picture"],
                                       fit: BoxFit.cover,
-                                    );
-                            })),
-                      ),
-                      SizedBox(
-                        height: Get.height * 0.01,
-                      ),
-                      CustomText(
-                        text: apartmentlist[index]["title"],
-                        txtStyle: customTextStyle.copyWith(fontSize: 15),
-                      )
-                    ],
-                  ),
+                                    )))),
+                    ),
+                    SizedBox(
+                      height: Get.height * 0.01,
+                    ),
+                    CustomText(
+                      text: apartmentlist[index]["title"],
+                      txtStyle: customTextStyle.copyWith(fontSize: 15),
+                    )
+                  ],
                 );
               })
         ],
